@@ -3,7 +3,9 @@
   const config = {
     texto: "VAI TOMAR NO CU",
     corTexto: "#00ffff",
-    tamanhoFonte: "6.5rem"  // Tamanho da fonte
+    corFundo: "#FF0000", // Cor de fundo
+    tamanhoFonte: "6.5rem",
+    velocidade: "5s" // Velocidade da rotação (ex: 3s, 10s, 1.5s)
   };
 </script>
 
@@ -22,7 +24,6 @@
 
     body {
       margin: 0;
-      background-color: #111;
       height: 100vh;
       display: flex;
       justify-content: center;
@@ -38,11 +39,11 @@
       font-size: clamp(2rem, 5vw, var(--font-size));
       font-weight: bold;
       transform-style: preserve-3d;
-      animation: rotateY 3s linear infinite;
       transform-origin: center center;
       position: relative;
       text-align: center;
       font-family: 'Comic Sans MS', cursive, sans-serif;
+      animation: rotateY var(--rotate-speed) linear infinite;
     }
 
     .text-3d .layer {
@@ -148,6 +149,8 @@
   const textElement = document.getElementById("text3d");
   textElement.style.color = config.corTexto;
   document.documentElement.style.setProperty('--font-size', config.tamanhoFonte);
+  document.documentElement.style.setProperty('--rotate-speed', config.velocidade);
+  document.body.style.backgroundColor = config.corFundo;
 
   for (let z = -20; z <= 0; z += 2) {
     const span = document.createElement('span');
