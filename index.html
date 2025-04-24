@@ -3,7 +3,7 @@
   const config = {
     texto: "VAI TOMAR NO CU",
     corTexto: "#00ffff",
-    fonte: "'Comic Sans MS', cursive, sans-serif",  // Definindo a fonte
+    fonte: "'Comic Sans MS', cursive, sans-serif",
     tamanhoFonte: "6.5rem"  // Tamanho da fonte
   };
 </script>
@@ -38,7 +38,6 @@
       transform-origin: center center;
       position: relative;
       text-align: center;
-      font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif !important;  /* Garantindo que a fonte será aplicada */
     }
 
     .text-3d .layer {
@@ -59,12 +58,6 @@
       top: 0;
       left: 0;
       z-index: 0;
-    }
-
-    @media (max-width: 600px) {
-      .text-3d {
-        font-size: 4rem;  /* Ajuste para telas menores */
-      }
     }
   </style>
 </head>
@@ -108,7 +101,7 @@
         vy: (Math.random() - 0.5) * 5,
         life: 100,
         radius: Math.random() * 4 + 2,
-        color: `hsl(${Math.random() * 360}, 100%, 60%)`
+        color: hsl(${Math.random() * 360}, 100%, 60%)
       });
     }
   }
@@ -154,8 +147,8 @@
 
   for (let z = -20; z <= 0; z += 2) {
     const span = document.createElement('span');
-    span.className = `layer ${z === 0 ? 'front' : 'back'}`;
-    span.style.transform = `translateX(-50%) translateZ(${z}px)`;
+    span.className = layer ${z === 0 ? 'front' : 'back'};
+    span.style.transform = translateX(-50%) translateZ(${z}px);
     span.style.opacity = z === 0 ? '1' : (1 + z / 20).toFixed(2);
     span.style.color = config.corTexto;
     span.innerText = config.texto;
