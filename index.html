@@ -1,9 +1,19 @@
+<!-- config.js -->
+<script>
+  const config = {
+    texto: "VAI TOMAR NO CU",
+    corTexto: "#00ffff",
+    fonte: "'Arial Black', sans-serif"
+  };
+</script>
+
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Hello World 3D</title>
+  <title>Texto 3D</title>
   <style>
     body {
       margin: 0;
@@ -19,30 +29,25 @@
     }
 
     .text-3d {
-      display: inline-block;
-      font-size: 4rem;
+      font-size: clamp(2rem, 5vw, 4rem);
       font-weight: bold;
-      font-family: sans-serif;
       transform-style: preserve-3d;
-      animation: rotateY 5s linear infinite;
+      animation: rotateY 3s linear infinite;
+      transform-origin: center center;
       position: relative;
+      text-align: center;
+    }
+
+    .text-3d:hover {
+      animation-play-state: paused;
     }
 
     .text-3d .layer {
       position: absolute;
       top: 0;
-      left: 0;
-      color: #00ffff;
-      backface-visibility: hidden;
-      transform-style: preserve-3d;
-    }
-
-    .text-3d .layer.front {
-      color: #00ffff;
-    }
-
-    .text-3d .layer.back {
-      color: #006666;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
     }
 
     @keyframes rotateY {
@@ -50,27 +55,112 @@
         transform: rotateY(0deg);
       }
       to {
-        transform: rotateY(360deg);
+        transform: rotateY(-360deg);
       }
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
     }
   </style>
 </head>
 <body>
-  <div class="scene">
-    <div class="text-3d">
-      <!-- Camadas 3D -->
-      <span class="layer back" style="transform: translateZ(-20px);">Hello World</span>
-      <span class="layer back" style="transform: translateZ(-18px);">Hello World</span>
-      <span class="layer back" style="transform: translateZ(-16px);">Hello World</span>
-      <span class="layer back" style="transform: translateZ(-14px);">Hello World</span>
-      <span class="layer back" style="transform: translateZ(-12px);">Hello World</span>
-      <span class="layer back" style="transform: translateZ(-10px);">Hello World</span>
-      <span class="layer back" style="transform: translateZ(-8px);">Hello World</span>
-      <span class="layer back" style="transform: translateZ(-6px);">Hello World</span>
-      <span class="layer back" style="transform: translateZ(-4px);">Hello World</span>
-      <span class="layer back" style="transform: translateZ(-2px);">Hello World</span>
-      <span class="layer front" style="transform: translateZ(0px);">Hello World</span>
-    </div>
+
+<canvas id="explosionCanvas"></canvas>
+
+<div class="scene">
+  <div class="text-3d" id="text3d">
+    <!-- Camadas geradas dinamicamente -->
   </div>
+</div>
+
+<script>
+  const canvas = document.getElementById('explosionCanvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  let width, height;
+
+  function resize() {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+
+  function createExplosion(x, y) {
+    for (let i = 0; i < 30; i++) {
+      particles.push({
+        x: x,
+        y: y,
+        vx: (Math.random() - 0.5) * 5,
+        vy: (Math.random() - 0.5) * 5,
+        life: 100,
+        radius: Math.random() * 4 + 2,
+        color: `hsl(${Math.random() * 360}, 100%, 60%)`
+      });
+    }
+  }
+
+  function updateParticles() {
+    particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.life--;
+    });
+    particles = particles.filter(p => p.life > 0);
+  }
+
+  function drawParticles() {
+    ctx.clearRect(0, 0, width, height);
+    particles.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius, 0, 2 * Math.PI);
+      ctx.fillStyle = p.color;
+      ctx.fill();
+    });
+  }
+
+  function loop() {
+    updateParticles();
+    drawParticles();
+    requestAnimationFrame(loop);
+  }
+
+  loop();
+
+  setInterval(() => {
+    const centerX = width / 2 + (Math.random() - 0.5) * 200;
+    const centerY = height / 2 + (Math.random() - 0.5) * 100;
+    createExplosion(centerX, centerY);
+  }, 600);
+
+  // Aplica config.js
+  const textElement = document.getElementById("text3d");
+  textElement.style.color = config.corTexto;
+  textElement.style.fontFamily = config.fonte;
+
+  for (let z = -20; z <= 0; z += 2) {
+    const span = document.createElement('span');
+    span.className = `layer ${z === 0 ? 'front' : 'back'}`;
+    span.style.transform = `translateX(-50%) translateZ(${z}px)`;
+    span.style.opacity = z === 0 ? '1' : (1 + z / 20).toFixed(2);
+    span.style.color = config.corTexto;
+    span.innerText = config.texto;
+    textElement.appendChild(span);
+  }
+</script>
+
+<script>
+  const config = {
+    texto: "VAI TOMAR NO CU",
+    corTexto: "#00ffff",
+    fonte: "'Arial Black', sans-serif"
+  };
+</script>
+
 </body>
 </html>
