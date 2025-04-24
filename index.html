@@ -101,7 +101,7 @@
         vy: (Math.random() - 0.5) * 5,
         life: 100,
         radius: Math.random() * 4 + 2,
-        color: hsl(${Math.random() * 360}, 100%, 60%)
+        color: `hsl(${Math.random() * 360}, 100%, 60%)`
       });
     }
   }
@@ -147,8 +147,8 @@
 
   for (let z = -20; z <= 0; z += 2) {
     const span = document.createElement('span');
-    span.className = layer ${z === 0 ? 'front' : 'back'};
-    span.style.transform = translateX(-50%) translateZ(${z}px);
+    span.className = `layer ${z === 0 ? 'front' : 'back'}`;
+    span.style.transform = `translateX(-50%) translateZ(${z}px)`;
     span.style.opacity = z === 0 ? '1' : (1 + z / 20).toFixed(2);
     span.style.color = config.corTexto;
     span.innerText = config.texto;
