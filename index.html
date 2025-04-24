@@ -1,3 +1,13 @@
+<!-- config.js -->
+<script>
+  const config = {
+    texto: "VAI TOMAR NO CU",
+    corTexto: "#00ffff",
+    tamanhoFonte: "6.5rem"  // Tamanho da fonte
+  };
+</script>
+
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -72,15 +82,6 @@
   </div>
 </div>
 
-<!-- Configuração -->
-<script>
-  const config = {
-    texto: "VAI TOMAR NO CU",
-    corTexto: "#00ffff",
-    tamanhoFonte: "6.5rem"
-  };
-</script>
-
 <script>
   // Sistema de partículas
   const canvas = document.getElementById('explosionCanvas');
@@ -143,7 +144,7 @@
     createExplosion(centerX, centerY);
   }, 600);
 
-  // Aplica config
+  // Aplica config.js
   const textElement = document.getElementById("text3d");
   textElement.style.color = config.corTexto;
   document.documentElement.style.setProperty('--font-size', config.tamanhoFonte);
@@ -158,7 +159,7 @@
     textElement.appendChild(span);
   }
 
-  // TOGGLE: play/pause da música
+  // TOGGLE: play/pause da música no clique ou toque
   const music = document.getElementById('backgroundMusic');
 
   function toggleMusic() {
