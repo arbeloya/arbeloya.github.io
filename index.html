@@ -4,7 +4,7 @@
     texto: "VAI TOMAR NO CU",
     corTexto: "#00ffff",
     fonte: "'Comic Sans MS', cursive, sans-serif",
-    tamanhoFonte: "6.5rem"  // Nova variável para o tamanho da fonte
+    tamanhoFonte: "6.5rem"  // Tamanho da fonte
   };
 </script>
 
@@ -23,6 +23,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      overflow: hidden;
     }
 
     .scene {
@@ -30,7 +31,7 @@
     }
 
     .text-3d {
-      font-size: clamp(2rem, 5vw, var(--font-size));  /* Alterado para usar variável */
+      font-size: clamp(2rem, 5vw, var(--font-size));
       font-weight: bold;
       transform-style: preserve-3d;
       animation: rotateY 3s linear infinite;
@@ -52,12 +53,8 @@
     }
 
     @keyframes rotateY {
-      from {
-        transform: rotateY(0deg);
-      }
-      to {
-        transform: rotateY(-360deg);
-      }
+      from { transform: rotateY(0deg); }
+      to { transform: rotateY(-360deg); }
     }
 
     canvas {
@@ -71,11 +68,11 @@
 <body>
 
 <!-- Música de fundo -->
-<audio controls autoplay>
+<audio id="backgroundMusic" loop>
   <source src="https://raw.githubusercontent.com/arbeloya/arbeloya.github.io/main/meucarro.mp3" type="audio/mp3">
   Seu navegador não suporta a tag de áudio.
 </audio>
-  
+
 <canvas id="explosionCanvas"></canvas>
 
 <div class="scene">
@@ -85,6 +82,7 @@
 </div>
 
 <script>
+  // Sistema de partículas
   const canvas = document.getElementById('explosionCanvas');
   const ctx = canvas.getContext('2d');
   let particles = [];
@@ -149,9 +147,7 @@
   const textElement = document.getElementById("text3d");
   textElement.style.color = config.corTexto;
   textElement.style.fontFamily = config.fonte;
-
-  // Adiciona o tamanho da fonte
-  document.documentElement.style.setProperty('--font-size', config.tamanhoFonte);  // Define a variável CSS
+  document.documentElement.style.setProperty('--font-size', config.tamanhoFonte);
 
   for (let z = -20; z <= 0; z += 2) {
     const span = document.createElement('span');
@@ -162,6 +158,13 @@
     span.innerText = config.texto;
     textElement.appendChild(span);
   }
+
+  // Tocar música após interação do usuário
+  window.addEventListener('click', () => {
+    document.getElementById('backgroundMusic').play().catch(e => {
+      console.log("Autoplay bloqueado:", e);
+    });
+  }, { once: true });
 </script>
 
 </body>
