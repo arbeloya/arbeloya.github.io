@@ -24,7 +24,7 @@
       font-weight: bold;
       font-family: sans-serif;
       transform-style: preserve-3d;
-      animation: rotateY 5s linear infinite reverse;
+      animation: rotateY 5s linear infinite; /* sentido horário */
       position: relative;
     }
 
@@ -35,12 +35,10 @@
       color: #00ffff;
     }
 
-    /* Camada frontal */
     .text-3d .layer.front {
       color: #00ffff;
     }
 
-    /* Camadas traseiras para dar profundidade */
     .text-3d .layer.back {
       color: #006666;
     }
@@ -50,7 +48,7 @@
         transform: rotateY(0deg);
       }
       to {
-        transform: rotateY(-360deg);
+        transform: rotateY(360deg); /* agora gira para a direita */
       }
     }
   </style>
@@ -59,16 +57,6 @@
   <div class="scene">
     <div class="text-3d">
       <!-- Camadas de trás para frente -->
-      <!-- Quanto mais camadas, mais sólido o efeito -->
-      <!-- Pode ajustar a distância e opacidade também se quiser -->
-      <!-- Aqui criamos 20 camadas sobrepostas deslocadas no eixo Z -->
-      <!-- A ordem importa: de trás pra frente -->
-      <!-- Não usamos CSS custom props pra facilitar aqui -->
-      <!-- Tudo em uma linha só: "Hello World" -->
-
-      <!-- Camadas de profundidade -->
-      <!-- Quanto menor o passo de Z, mais liso fica -->
-      <!-- Pode automatizar com JS, mas aqui é só HTML/CSS puro -->
       <span class="layer back" style="transform: translateZ(-20px);">Hello World</span>
       <span class="layer back" style="transform: translateZ(-18px);">Hello World</span>
       <span class="layer back" style="transform: translateZ(-16px);">Hello World</span>
@@ -79,7 +67,6 @@
       <span class="layer back" style="transform: translateZ(-6px);">Hello World</span>
       <span class="layer back" style="transform: translateZ(-4px);">Hello World</span>
       <span class="layer back" style="transform: translateZ(-2px);">Hello World</span>
-      <!-- Camada principal (na frente) -->
       <span class="layer front" style="transform: translateZ(0px);">Hello World</span>
     </div>
   </div>
