@@ -159,12 +159,15 @@
     textElement.appendChild(span);
   }
 
-  // Tocar música após interação do usuário
+  // TOGGLE: play ou pause da música com clique
+  const music = document.getElementById('backgroundMusic');
   window.addEventListener('click', () => {
-    document.getElementById('backgroundMusic').play().catch(e => {
-      console.log("Autoplay bloqueado:", e);
-    });
-  }, { once: true });
+    if (music.paused) {
+      music.play().catch(e => console.log("Erro ao tentar tocar música:", e));
+    } else {
+      music.pause();
+    }
+  });
 </script>
 
 </body>
