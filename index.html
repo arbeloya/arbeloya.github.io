@@ -1,11 +1,11 @@
 <!-- config.js -->
 <script>
   const config = {
-    texto: "texto",
+    texto: "A equação de Euler é $e^{i\\pi} + 1 = 0$",
     corTexto: "#FF0000",
-    corFundo: "#000000", // Cor de fundo
+    corFundo: "#000000",
     tamanhoFonte: "6.5rem",
-    velocidade: "8s" // Velocidade da rotação (ex: 3s, 10s, 1.5s)
+    velocidade: "8s"
   };
 </script>
 
@@ -16,6 +16,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>VTNC</title>
+
+  <!-- MathJax para LaTeX -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+
   <style>
     @font-face {
       font-family: 'Comic Sans MS';
@@ -69,7 +82,6 @@
 </head>
 <body>
 
-<!-- Música de fundo -->
 <audio id="backgroundMusic" loop>
   <source src="https://raw.githubusercontent.com/arbeloya/arbeloya.github.io/main/meucarro.mp3" type="audio/mp3">
   Seu navegador não suporta a tag de áudio.
@@ -79,7 +91,7 @@
 
 <div class="scene">
   <div class="text-3d" id="text3d">
-    <!-- Camadas geradas dinamicamente -->
+    <!-- Camadas serão geradas aqui -->
   </div>
 </div>
 
@@ -158,13 +170,17 @@
     span.style.transform = `translateX(-50%) translateZ(${z}px)`;
     span.style.opacity = z === 0 ? '1' : (1 + z / 20).toFixed(2);
     span.style.color = config.corTexto;
-    span.innerText = config.texto;
+    span.innerHTML = config.texto; // usa innerHTML para processar o LaTeX
     textElement.appendChild(span);
   }
 
-  // TOGGLE: play/pause da música no clique ou toque
-  const music = document.getElementById('backgroundMusic');
+  // Atualiza MathJax para processar LaTeX gerado via JS
+  if (window.MathJax) {
+    MathJax.typeset();
+  }
 
+  // TOGGLE da música
+  const music = document.getElementById('backgroundMusic');
   function toggleMusic() {
     if (music.paused) {
       music.play().catch(e => console.log("Erro ao tentar tocar música:", e));
