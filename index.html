@@ -3,7 +3,8 @@
   const config = {
     texto: "VAI TOMAR NO CU",
     corTexto: "#00ffff",
-    fonte: "'Arial Black', sans-serif"
+    fonte: "'Arial Black', sans-serif",
+    tamanhoFonte: "6rem"  // Nova variável para o tamanho da fonte
   };
 </script>
 
@@ -29,7 +30,7 @@
     }
 
     .text-3d {
-      font-size: clamp(2rem, 5vw, 4rem);
+      font-size: clamp(2rem, 5vw, var(--font-size));  /* Alterado para usar variável */
       font-weight: bold;
       transform-style: preserve-3d;
       animation: rotateY 3s linear infinite;
@@ -143,6 +144,9 @@
   textElement.style.color = config.corTexto;
   textElement.style.fontFamily = config.fonte;
 
+  // Adiciona o tamanho da fonte
+  document.documentElement.style.setProperty('--font-size', config.tamanhoFonte);  // Define a variável CSS
+
   for (let z = -20; z <= 0; z += 2) {
     const span = document.createElement('span');
     span.className = `layer ${z === 0 ? 'front' : 'back'}`;
@@ -152,14 +156,6 @@
     span.innerText = config.texto;
     textElement.appendChild(span);
   }
-</script>
-
-<script>
-  const config = {
-    texto: "VAI TOMAR NO CU",
-    corTexto: "#00ffff",
-    fonte: "'Arial Black', sans-serif"
-  };
 </script>
 
 </body>
