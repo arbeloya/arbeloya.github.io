@@ -159,15 +159,19 @@
     textElement.appendChild(span);
   }
 
-  // TOGGLE: play ou pause da música com clique
+  // TOGGLE: play/pause da música no clique ou toque
   const music = document.getElementById('backgroundMusic');
-  window.addEventListener('click', () => {
+
+  function toggleMusic() {
     if (music.paused) {
       music.play().catch(e => console.log("Erro ao tentar tocar música:", e));
     } else {
       music.pause();
     }
-  });
+  }
+
+  window.addEventListener('click', toggleMusic);
+  window.addEventListener('touchstart', toggleMusic);
 </script>
 
 </body>
