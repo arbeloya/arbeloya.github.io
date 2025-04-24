@@ -6,7 +6,7 @@
     corFundo: "#000000",
     tamanhoFonte: "6.5rem",
     velocidade: "8s",
-    usarCoresRGB: true // Ativa animação RGB com contraste
+    usarCoresRGB: true
   };
 </script>
 
@@ -154,12 +154,13 @@
   loop();
 
   setInterval(() => {
-    const centerX = width / 2 + (Math.random() - 0.5) * 200;
-    const centerY = height / 2 + (Math.random() - 0.5) * 100;
+    const rect = canvas.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2 + (Math.random() - 0.5) * 200;
+    const centerY = rect.top + rect.height / 2 + (Math.random() - 0.5) * 100;
     createExplosion(centerX, centerY);
   }, 600);
 
-  // Aplica config
+  // Texto 3D
   const textElement = document.getElementById("text3d");
   document.documentElement.style.setProperty('--font-size', config.tamanhoFonte);
   document.documentElement.style.setProperty('--rotate-speed', config.velocidade);
@@ -197,22 +198,23 @@
     });
   }
 
-  // Renderiza o LaTeX via MathJax após o DOM estar pronto
   if (window.MathJax) {
     MathJax.typesetPromise();
   }
 
-  // Toggle da música
+  // Música: toca uma vez após clique
   const music = document.getElementById('backgroundMusic');
-  function toggleMusic() {
-    if (music.paused) {
-      music.play().catch(e => console.log("Erro ao tentar tocar música:", e));
-    } else {
-      music.pause();
+  let musicStarted = false;
+  function startMusicOnce() {
+    if (!musicStarted) {
+      music.play().then(() => {
+        musicStarted = true;
+      }).catch(e => console.log("Erro ao tocar música:", e));
     }
   }
-  window.addEventListener('click', toggleMusic);
-  window.addEventListener('touchstart', toggleMusic);
+
+  window.addEventListener('click', startMusicOnce, { once: true });
+  window.addEventListener('touchstart', startMusicOnce, { once: true });
 </script>
 
 </body>
