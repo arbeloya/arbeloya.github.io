@@ -3,7 +3,7 @@
   const config = {
     texto: "VAI TOMAR NO CU",
     corTexto: "#00ffff",
-    fonte: "'Comic Sans MS', cursive, sans-serif",
+    fonte: "'Comic Sans MS', cursive, sans-serif",  // Definindo a fonte
     tamanhoFonte: "6.5rem"  // Tamanho da fonte
   };
 </script>
@@ -38,6 +38,7 @@
       transform-origin: center center;
       position: relative;
       text-align: center;
+      font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif !important;  /* Garantindo que a fonte será aplicada */
     }
 
     .text-3d .layer {
@@ -58,6 +59,12 @@
       top: 0;
       left: 0;
       z-index: 0;
+    }
+
+    @media (max-width: 600px) {
+      .text-3d {
+        font-size: 4rem;  /* Ajuste para telas menores */
+      }
     }
   </style>
 </head>
