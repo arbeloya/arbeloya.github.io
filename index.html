@@ -6,10 +6,11 @@
     corFundo: "#000000",
     tamanhoFonte: "6.5rem",
     velocidade: "8s",
-    usarCoresRGB: true // Ativa animação RGB com contraste
+    animarRGB: true // Ativar ou desativar animação RGB
   };
 </script>
 
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,8 +23,7 @@
     window.MathJax = {
       tex: {
         inlineMath: [['$', '$'], ['\\(', '\\)']],
-        displayMath: [['$$', '$$'], ['\\[', '\\]']],
-        packages: ['base', 'ams', 'bbold']
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
       },
       svg: { fontCache: 'global' }
     };
@@ -78,12 +78,13 @@
       top: 0;
       left: 0;
       z-index: 0;
+      width: 100vw;
+      height: 100vh;
     }
   </style>
 </head>
 <body>
 
-<!-- Música de fundo -->
 <audio id="backgroundMusic" loop>
   <source src="https://raw.githubusercontent.com/arbeloya/arbeloya.github.io/main/meucarro.mp3" type="audio/mp3">
   Seu navegador não suporta a tag de áudio.
@@ -98,15 +99,18 @@
 </div>
 
 <script>
-  // Sistema de partículas
+  // Partículas
   const canvas = document.getElementById('explosionCanvas');
   const ctx = canvas.getContext('2d');
   let particles = [];
   let width, height;
 
   function resize() {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    const rect = canvas.getBoundingClientRect();
+    width = rect.width;
+    height = rect.height;
   }
 
   window.addEventListener('resize', resize);
@@ -159,50 +163,26 @@
     createExplosion(centerX, centerY);
   }, 600);
 
-  // Aplica config
+  // Aplica configuração
   const textElement = document.getElementById("text3d");
+  textElement.style.color = config.corTexto;
   document.documentElement.style.setProperty('--font-size', config.tamanhoFonte);
   document.documentElement.style.setProperty('--rotate-speed', config.velocidade);
+  document.body.style.backgroundColor = config.corFundo;
 
   for (let z = -20; z <= 0; z += 2) {
     const span = document.createElement('span');
     span.className = `layer ${z === 0 ? 'front' : 'back'}`;
     span.style.transform = `translateX(-50%) translateZ(${z}px)`;
     span.style.opacity = z === 0 ? '1' : (1 + z / 20).toFixed(2);
+    span.style.color = config.corTexto;
     span.innerHTML = config.texto;
     textElement.appendChild(span);
   }
 
-  if (config.usarCoresRGB) {
-    let hue = 0;
-    function updateColors() {
-      const fg = `hsl(${hue}, 100%, 50%)`;
-      const bg = `hsl(${(hue + 180) % 360}, 100%, 50%)`;
+  if (window.MathJax) MathJax.typeset();
 
-      document.body.style.backgroundColor = bg;
-      textElement.style.color = fg;
-      textElement.querySelectorAll('.layer').forEach(layer => {
-        layer.style.color = fg;
-      });
-
-      hue = (hue + 0.5) % 360;
-      requestAnimationFrame(updateColors);
-    }
-    updateColors();
-  } else {
-    textElement.style.color = config.corTexto;
-    document.body.style.backgroundColor = config.corFundo;
-    textElement.querySelectorAll('.layer').forEach(layer => {
-      layer.style.color = config.corTexto;
-    });
-  }
-
-  // Renderiza o LaTeX via MathJax após o DOM estar pronto
-  if (window.MathJax) {
-    MathJax.typesetPromise();
-  }
-
-  // Toggle da música
+  // Música
   const music = document.getElementById('backgroundMusic');
   function toggleMusic() {
     if (music.paused) {
@@ -211,8 +191,24 @@
       music.pause();
     }
   }
+
   window.addEventListener('click', toggleMusic);
   window.addEventListener('touchstart', toggleMusic);
+
+  // RGB animado (se ativado)
+  if (config.animarRGB) {
+    let hue = 0;
+    setInterval(() => {
+      hue = (hue + 1) % 360;
+      const textColor = `hsl(${hue}, 100%, 50%)`;
+      const bgColor = `hsl(${(hue + 180) % 360}, 100%, 10%)`;
+
+      textElement.querySelectorAll('.layer').forEach(layer => {
+        layer.style.color = textColor;
+      });
+      document.body.style.backgroundColor = bgColor;
+    }, 60); // 60ms para suavidade
+  }
 </script>
 
 </body>
