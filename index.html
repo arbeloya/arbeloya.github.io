@@ -1,12 +1,3 @@
-<!-- config.js -->
-<script>
-  const config = {
-    texto: "VAI TOMAR NO CU",
-    corTexto: "#00ffff",
-    tamanhoFonte: "6.5rem"  // Tamanho da fonte
-  };
-</script>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -81,12 +72,12 @@
   </div>
 </div>
 
-<!-- config.js -->
+<!-- Configuração -->
 <script>
   const config = {
     texto: "VAI TOMAR NO CU",
     corTexto: "#00ffff",
-    tamanhoFonte: "6.5rem"  // Tamanho da fonte
+    tamanhoFonte: "6.5rem"
   };
 </script>
 
@@ -125,4 +116,62 @@
       p.y += p.vy;
       p.life--;
     });
-    particles = particles.filter
+    particles = particles.filter(p => p.life > 0);
+  }
+
+  function drawParticles() {
+    ctx.clearRect(0, 0, width, height);
+    particles.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius, 0, 2 * Math.PI);
+      ctx.fillStyle = p.color;
+      ctx.fill();
+    });
+  }
+
+  function loop() {
+    updateParticles();
+    drawParticles();
+    requestAnimationFrame(loop);
+  }
+
+  loop();
+
+  setInterval(() => {
+    const centerX = width / 2 + (Math.random() - 0.5) * 200;
+    const centerY = height / 2 + (Math.random() - 0.5) * 100;
+    createExplosion(centerX, centerY);
+  }, 600);
+
+  // Aplica config
+  const textElement = document.getElementById("text3d");
+  textElement.style.color = config.corTexto;
+  document.documentElement.style.setProperty('--font-size', config.tamanhoFonte);
+
+  for (let z = -20; z <= 0; z += 2) {
+    const span = document.createElement('span');
+    span.className = `layer ${z === 0 ? 'front' : 'back'}`;
+    span.style.transform = `translateX(-50%) translateZ(${z}px)`;
+    span.style.opacity = z === 0 ? '1' : (1 + z / 20).toFixed(2);
+    span.style.color = config.corTexto;
+    span.innerText = config.texto;
+    textElement.appendChild(span);
+  }
+
+  // TOGGLE: play/pause da música
+  const music = document.getElementById('backgroundMusic');
+
+  function toggleMusic() {
+    if (music.paused) {
+      music.play().catch(e => console.log("Erro ao tentar tocar música:", e));
+    } else {
+      music.pause();
+    }
+  }
+
+  window.addEventListener('click', toggleMusic);
+  window.addEventListener('touchstart', toggleMusic);
+</script>
+
+</body>
+</html>
