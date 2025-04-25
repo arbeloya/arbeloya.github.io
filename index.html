@@ -20,10 +20,10 @@
       imagem3: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwcB1tq5uC9rt1eCtdf6ZRH9XBCpP2RP3Icg31Zz2sUsCvO-plhSTVapKbs-7SZKP5e18XWks87eqxfoLetP8P6Q",
       imagem4: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwcB1tq5uC9rt1eCtdf6ZRH9XBCpP2RP3Icg31Zz2sUsCvO-plhSTVapKbs-7SZKP5e18XWks87eqxfoLetP8P6Q",
 
-      tamanhoImagem1: "300px",
-      tamanhoImagem2: "300px",
-      tamanhoImagem3: "300px",
-      tamanhoImagem4: "300px",
+      imagem1Tamanho: "20vw",
+      imagem2Tamanho: "20vw",
+      imagem3Tamanho: "20vw",
+      imagem4Tamanho: "20vw",
 
       velocidadeRotacaoImagem: "3s"
     };
@@ -104,6 +104,7 @@
       z-index: 1;
       animation: rotateImage linear infinite;
       transform-origin: center center;
+      height: auto;
     }
 
     @keyframes rotateImage {
@@ -111,11 +112,10 @@
       to { transform: rotate(360deg); }
     }
 
-    /* Ajuste de margem para afastar do canto */
-    #img1 { top: 100px; left: 200px; }
-    #img2 { top: 100px; right: 200px; }
-    #img3 { bottom: 100px; left: 200px; }
-    #img4 { bottom: 100px; right: 200px; }
+    #img1 { top: 5vh; left: 5vw; }
+    #img2 { top: 5vh; right: 5vw; }
+    #img3 { bottom: 5vh; left: 5vw; }
+    #img4 { bottom: 5vh; right: 5vw; }
   </style>
 </head>
 <body>
@@ -241,21 +241,21 @@
     });
   }
 
-  // Carrega imagens e aplica tamanhos + rotação
+  // Carrega imagens com tamanhos responsivos do config
   const setImage = (id, src, size) => {
     const img = document.getElementById(id);
     img.src = src;
     img.style.width = size;
-    img.style.height = size;
+    img.style.height = "auto";
     img.style.animationDuration = config.velocidadeRotacaoImagem;
   };
 
-  setImage('img1', config.imagem1, config.tamanhoImagem1);
-  setImage('img2', config.imagem2, config.tamanhoImagem2);
-  setImage('img3', config.imagem3, config.tamanhoImagem3);
-  setImage('img4', config.imagem4, config.tamanhoImagem4);
+  setImage('img1', config.imagem1, config.imagem1Tamanho);
+  setImage('img2', config.imagem2, config.imagem2Tamanho);
+  setImage('img3', config.imagem3, config.imagem3Tamanho);
+  setImage('img4', config.imagem4, config.imagem4Tamanho);
 
-  // Toca ou pausa a música ao clicar/tocar na tela
+  // Toca/pausa música com toque/click
   const music = document.getElementById('backgroundMusic');
   function toggleMusic() {
     if (music.paused) {
