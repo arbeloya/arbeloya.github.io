@@ -25,7 +25,14 @@
         displayMath: [['$$', '$$'], ['\\[', '\\]']],
         packages: ['base', 'ams', 'bbold']
       },
-      svg: { fontCache: 'global' }
+      svg: { fontCache: 'global' },
+      startup: {
+        pageReady: () => {
+          MathJax.typesetPromise().then(() => {
+            console.log("LaTeX renderizado com sucesso.");
+          });
+        }
+      }
     };
   </script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
@@ -98,7 +105,7 @@
 </div>
 
 <script>
-  // Sistema de partículas
+  // Partículas RGB
   const canvas = document.getElementById('explosionCanvas');
   const ctx = canvas.getContext('2d');
   let particles = [];
@@ -154,9 +161,8 @@
   loop();
 
   setInterval(() => {
-    const rect = canvas.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2 + (Math.random() - 0.5) * 200;
-    const centerY = rect.top + rect.height / 2 + (Math.random() - 0.5) * 100;
+    const centerX = width / 2 + (Math.random() - 0.5) * 200;
+    const centerY = height / 2 + (Math.random() - 0.5) * 100;
     createExplosion(centerX, centerY);
   }, 600);
 
@@ -174,6 +180,7 @@
     textElement.appendChild(span);
   }
 
+  // Cores RGB animadas
   if (config.usarCoresRGB) {
     let hue = 0;
     function updateColors() {
@@ -198,23 +205,17 @@
     });
   }
 
-  if (window.MathJax) {
-    MathJax.typesetPromise();
-  }
-
-  // Música: toca uma vez após clique
+  // Toca ou pausa a música ao clicar/tocar na tela
   const music = document.getElementById('backgroundMusic');
-  let musicStarted = false;
-  function startMusicOnce() {
-    if (!musicStarted) {
-      music.play().then(() => {
-        musicStarted = true;
-      }).catch(e => console.log("Erro ao tocar música:", e));
+  function toggleMusic() {
+    if (music.paused) {
+      music.play().catch(e => console.log("Erro ao tentar tocar música:", e));
+    } else {
+      music.pause();
     }
   }
-
-  window.addEventListener('click', startMusicOnce, { once: true });
-  window.addEventListener('touchstart', startMusicOnce, { once: true });
+  window.addEventListener('click', toggleMusic);
+  window.addEventListener('touchstart', toggleMusic);
 </script>
 
 </body>
