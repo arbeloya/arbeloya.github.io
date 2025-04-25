@@ -1,21 +1,33 @@
-<!-- config.js -->
-<script>
-  const config = {
-    texto: "$0 \\notin \\mathbb{N}$",
-    corTexto: "#FF0000",
-    corFundo: "#000000",
-    tamanhoFonte: "6.5rem",
-    velocidade: "8s",
-    usarCoresRGB: true
-  };
-</script>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>VTNC</title>
+
+  <!-- Config -->
+  <script>
+    const config = {
+      texto: "$0 \\notin \\mathbb{N}$",
+      corTexto: "#FF0000",
+      corFundo: "#000000",
+      tamanhoFonte: "6.5rem",
+      velocidade: "8s",
+      usarCoresRGB: true,
+
+      imagem1: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwcB1tq5uC9rt1eCtdf6ZRH9XBCpP2RP3Icg31Zz2sUsCvO-plhSTVapKbs-7SZKP5e18XWks87eqxfoLetP8P6Q",
+      imagem2: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwcB1tq5uC9rt1eCtdf6ZRH9XBCpP2RP3Icg31Zz2sUsCvO-plhSTVapKbs-7SZKP5e18XWks87eqxfoLetP8P6Q",
+      imagem3: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwcB1tq5uC9rt1eCtdf6ZRH9XBCpP2RP3Icg31Zz2sUsCvO-plhSTVapKbs-7SZKP5e18XWks87eqxfoLetP8P6Q",
+      imagem4: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwcB1tq5uC9rt1eCtdf6ZRH9XBCpP2RP3Icg31Zz2sUsCvO-plhSTVapKbs-7SZKP5e18XWks87eqxfoLetP8P6Q",
+
+      tamanhoImagem1: "400px",
+      tamanhoImagem2: "400px",
+      tamanhoImagem3: "400px",
+      tamanhoImagem4: "400px",
+
+      velocidadeRotacaoImagem: "3s"
+    };
+  </script>
 
   <!-- MathJax para LaTeX -->
   <script>
@@ -86,9 +98,33 @@
       left: 0;
       z-index: 0;
     }
+
+    .corner-image {
+      position: absolute;
+      z-index: 1;
+      animation: rotateImage linear infinite;
+      transform-origin: center center;
+    }
+
+    @keyframes rotateImage {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Ajuste de margem para afastar do canto */
+    #img1 { top: 100px; left: 200px; }
+    #img2 { top: 100px; right: 200px; }
+    #img3 { bottom: 100px; left: 200px; }
+    #img4 { bottom: 100px; right: 200px; }
   </style>
 </head>
 <body>
+
+<!-- Imagens nos cantos -->
+<img id="img1" class="corner-image" src="" alt="Imagem 1">
+<img id="img2" class="corner-image" src="" alt="Imagem 2">
+<img id="img3" class="corner-image" src="" alt="Imagem 3">
+<img id="img4" class="corner-image" src="" alt="Imagem 4">
 
 <!-- Música de fundo -->
 <audio id="backgroundMusic" loop>
@@ -105,7 +141,7 @@
 </div>
 
 <script>
-  // Partículas RGB
+  // Canvas RGB
   const canvas = document.getElementById('explosionCanvas');
   const ctx = canvas.getContext('2d');
   let particles = [];
@@ -204,6 +240,20 @@
       layer.style.color = config.corTexto;
     });
   }
+
+  // Carrega imagens e aplica tamanhos + rotação
+  const setImage = (id, src, size) => {
+    const img = document.getElementById(id);
+    img.src = src;
+    img.style.width = size;
+    img.style.height = size;
+    img.style.animationDuration = config.velocidadeRotacaoImagem;
+  };
+
+  setImage('img1', config.imagem1, config.tamanhoImagem1);
+  setImage('img2', config.imagem2, config.tamanhoImagem2);
+  setImage('img3', config.imagem3, config.tamanhoImagem3);
+  setImage('img4', config.imagem4, config.tamanhoImagem4);
 
   // Toca ou pausa a música ao clicar/tocar na tela
   const music = document.getElementById('backgroundMusic');
