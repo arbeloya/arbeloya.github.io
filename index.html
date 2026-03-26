@@ -294,14 +294,24 @@
   setImage('img4', config.imagem4, config.imagem4Tamanho);
 
   const music = document.getElementById('backgroundMusic');
-  // Toca ou pausa a música a cada clique na tela
-  window.addEventListener('click', () => {
+
+  // Função que decide se toca a música ou ignora o clique
+  const handleMusicToggle = (e) => {
+    // Se o clique/toque foi DENTRO do chat, a função para aqui e não mexe na música
+    if (e.target.closest('#chat-container')) {
+      return; 
+    }
+
     if (music.paused) {
-      music.play().catch(e => console.log("Aguardando interação para tocar música..."));
+      music.play().catch(err => console.log("Aguardando interação..."));
     } else {
       music.pause();
     }
-  });
+  };
+
+  // Ativa a lógica no clique e no toque do celular
+  window.addEventListener('click', handleMusicToggle);
+  window.addEventListener('touchstart', handleMusicToggle);
 
   // Garante que o toque no celular também funcione como o clique
   window.addEventListener('touchstart', () => {
