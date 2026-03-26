@@ -295,32 +295,24 @@
 
   const music = document.getElementById('backgroundMusic');
 
-  // Função que decide se toca a música ou ignora o clique
-  const handleMusicToggle = (e) => {
-    // Se o clique/toque foi DENTRO do chat, a função para aqui e não mexe na música
+  // Função única para controlar o som
+  const handleMusic = (e) => {
+    // 1. Se o clique for em qualquer lugar do chat (texto, botão, fundo do chat), IGNORE.
     if (e.target.closest('#chat-container')) {
       return; 
     }
 
-    if (music.paused) {
-      music.play().catch(err => console.log("Aguardando interação..."));
-    } else {
-      music.pause();
-    }
-  };
-
-  // Ativa a lógica no clique e no toque do celular
-  window.addEventListener('click', handleMusicToggle);
-  window.addEventListener('touchstart', handleMusicToggle);
-
-  // Garante que o toque no celular também funcione como o clique
-  window.addEventListener('touchstart', () => {
+    // 2. Se não for no chat, troca o estado da música
     if (music.paused) {
       music.play().catch(() => {});
     } else {
       music.pause();
     }
-  });
+  };
+
+  // USAMOS APENAS 'click'. 
+  // O navegador mobile já entende o toque como clique e evita o "duplo acionamento".
+  window.addEventListener('click', handleMusic);
 </script>
 
 <script type="module">
