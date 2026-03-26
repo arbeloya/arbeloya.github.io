@@ -9,7 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
 
-  
   <script>
     const config = {
       texto: "VAI TOMAR NO CU!",
@@ -53,14 +52,6 @@
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 
   <style>
-    /* 1. Usando uma versão mais estável da Comic Sans hospedada externamente */
-    @font-face {
-      font-family: 'Comic Sans MS Custom';
-      src: url('https://cdn.jsdelivr.net/gh/saatvikbhardwaj/comic-sans-ms@master/Comic%20Sans%20MS.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-
     body {
       margin: 0;
       height: 100vh;
@@ -68,27 +59,16 @@
       justify-content: center;
       align-items: center;
       overflow: hidden;
-      /* Aplicando a fonte no corpo todo */
-      font-family: 'Comic Sans MS Custom', 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+      font-family: 'Comic Neue', 'Comic Sans MS', cursive, sans-serif;
     }
 
-    /* 2. Forçando a fonte nos inputs e botões (Mobile é chato com isso) */
     #chat-container input, 
     #chat-container button, 
     #chat-messages,
-    .chat-msg {
-      font-family: 'Comic Sans MS Custom', 'Comic Sans MS', 'Comic Sans', cursive, sans-serif !important;
-      font-style: normal !important; /* Tira o itálico se você não quiser */
-    }
-
-
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
+    .chat-msg,
+    .text-3d {
+      font-family: 'Comic Neue', 'Comic Sans MS', cursive, sans-serif !important;
+      font-style: normal !important;
     }
 
     .scene {
@@ -102,7 +82,6 @@
       transform-origin: center center;
       position: relative;
       text-align: center;
-      font-family: 'Comic Sans MS', cursive, sans-serif;
       animation: rotateY var(--rotate-speed) linear infinite;
     }
 
@@ -159,12 +138,11 @@
       z-index: 100;
       display: flex;
       flex-direction: column;
-      font-family: 'Comic Sans MS', cursive, sans-serif;
       color: white;
     }
 
     #chat-messages {
-      height: 32vh; /* Altura que você pediu */
+      height: 32vh; 
       overflow-y: auto;
       margin-bottom: 10px;
       font-size: 16px;
@@ -177,9 +155,7 @@
       gap: 5px;
     }
 
-    /* Melhora para Celular: sem zoom e com Comic Sans forçada */
     #chat-inputs input, #chat-inputs button {
-      font-family: 'Comic Sans MS', cursive, sans-serif !important;
       font-size: 16px !important; 
       padding: 8px;
       border-radius: 5px;
@@ -196,7 +172,6 @@
     .chat-msg { margin-bottom: 8px; word-wrap: break-word; text-align: left; line-height: 1.4; }
     .chat-user { font-weight: bold; color: #ffff00; }
     
-    /* Estilo das imagens dentro do chat */
     .chat-img {
       max-width: 100%;
       max-height: 250px;
@@ -206,38 +181,32 @@
       display: block;
     }
 
-    /* --- DENTRO DA MEDIA QUERY QUE JÁ EXISTE --- */
+    /* --- MEDIA QUERY PARA MOBILE --- */
     @media screen and (max-width: 768px) {
       .scene {
         position: absolute; 
-        top: 78vh; /* Desci um tiquinho mais o texto para dar espaço aos dedos */
+        top: 78vh; 
         left: 50%;
         transform: translateX(-50%);
       }
 
-      /* MOVE OS DEDOS DO TOPO PARA BAIXO DO CHAT */
       #img1, #img2 {
-        top: 64vh !important; /* 48% da altura da tela coloca eles logo abaixo do botão de enviar */
+        top: 64vh !important; 
       }
       
-      /* Ajuste opcional: deixar eles um pouco mais "abertos" nas pontas */
       #img1 { left: 2vw; }
       #img2 { right: 2vw; }
 
       #img3, #img4 {
-        /* Mudando de 5vh (PC) para apenas 1vh (quase colado no chão) */
         bottom: 1vh !important; 
       }
-      /* Opcional: abrir um pouco mais eles nas laterais também */
       #img3 { left: 2vw; }
       #img4 { right: 2vw; }
-
       
       .text-3d {
-        --font-size: 3.5rem; /* Ajuste para o texto não bater nos dedos novos */
+        --font-size: 3.5rem; 
       }
     }
-    
   </style>
 </head>
 <body>
@@ -267,7 +236,6 @@
 </div>
   
 <script>
-  // Canvas RGB
   const canvas = document.getElementById('explosionCanvas');
   const ctx = canvas.getContext('2d');
   let particles = [];
@@ -357,16 +325,11 @@
 
   const music = document.getElementById('backgroundMusic');
 
-  // Função única e robusta para o som
   const handleMusic = (e) => {
-    // 1. Se o toque/clique for dentro do chat, ignora completamente
     if (e.target.closest('#chat-container')) {
       return; 
     }
-
-    // 2. Tenta dar o play ou pause
     if (music.paused) {
-      // O .play() retorna uma Promessa. Se o navegador bloquear, a gente avisa no console.
       music.play().catch(err => {
         console.warn("O navegador bloqueou o áudio. Tente clicar fora do chat novamente.");
       });
@@ -375,7 +338,6 @@
     }
   };
 
-  // 'pointerdown' é o segredo: funciona instantaneamente no PC e no Celular
   document.addEventListener('pointerdown', handleMusic);
 </script>
 
@@ -414,7 +376,6 @@
 
   inputText.addEventListener("keypress", (e) => { if (e.key === "Enter") btnSend.click(); });
 
-  // Função dedicada para rolar sempre para o final
   const scrollToBottom = () => {
       chatMessages.scrollTop = chatMessages.scrollHeight;
   };
@@ -426,27 +387,23 @@
       
       let textoFinal = data.texto;
 
-      // Detector de links de imagem
       const regexImagem = /(https?:\/\/[^\s]+(?:\.png|\.jpg|\.jpeg|\.gif|\.webp|format=png|format=jpg|format=jpeg|format=gif|format=webp)[^\s]*)/ig;
       textoFinal = textoFinal.replace(regexImagem, '<br><img src="$1" class="chat-img">');
 
       div.innerHTML = `<span class="chat-user">${data.nome}:</span> ${textoFinal}`;
       chatMessages.appendChild(div);
       
-      // 1. Rolagem imediata (para texto puro)
       scrollToBottom();
 
-      // 2. CORREÇÃO PARA IMAGENS: Rola de novo quando a imagem terminar de baixar
       const imagensNaMensagem = div.getElementsByTagName('img');
       for (let img of imagensNaMensagem) {
           img.onload = scrollToBottom;
       }
 
-      // 3. CORREÇÃO PARA LATEX: Rola de novo depois que o MathJax terminar de renderizar
       if (typeof MathJax !== 'undefined') {
           MathJax.typesetPromise([div])
               .then(() => {
-                  scrollToBottom(); // <--- O segredo está aqui!
+                  scrollToBottom(); 
               })
               .catch((err) => console.log(err));
       }
