@@ -294,7 +294,23 @@
   setImage('img4', config.imagem4, config.imagem4Tamanho);
 
   const music = document.getElementById('backgroundMusic');
-  window.addEventListener('click', () => { if(music.paused) music.play().catch(() => {}); });
+  // Toca ou pausa a música a cada clique na tela
+  window.addEventListener('click', () => {
+    if (music.paused) {
+      music.play().catch(e => console.log("Aguardando interação para tocar música..."));
+    } else {
+      music.pause();
+    }
+  });
+
+  // Garante que o toque no celular também funcione como o clique
+  window.addEventListener('touchstart', () => {
+    if (music.paused) {
+      music.play().catch(() => {});
+    } else {
+      music.pause();
+    }
+  });
 </script>
 
 <script type="module">
