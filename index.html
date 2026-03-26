@@ -374,15 +374,26 @@
   });
 
   // Função que fica escutando o banco de dados em tempo real
+// Receber mensagens em tempo real e compilar o LaTeX
   onChildAdded(chatRef, (snapshot) => {
       const data = snapshot.val();
+      
+      // Cria a div da mensagem
       const div = document.createElement('div');
       div.className = 'chat-msg';
       div.innerHTML = `<span class="chat-user">${data.nome}:</span> ${data.texto}`;
+      
+      // Joga a mensagem na tela
       chatMessages.appendChild(div);
       
-      // Rola a barrinha do chat para a última mensagem automaticamente
+      // Rola a barrinha do chat para baixo
       chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      // --- A MÁGICA DO LATEX AQUI ---
+      // Pede para o MathJax compilar a matemática apenas dentro dessa nova div
+      if (typeof MathJax !== 'undefined') {
+          MathJax.typesetPromise([div]).catch((err) => console.log('Erro no MathJax: ', err));
+      }
   });
 </script>
   
