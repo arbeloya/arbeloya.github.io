@@ -295,24 +295,26 @@
 
   const music = document.getElementById('backgroundMusic');
 
-  // Função única para controlar o som
+  // Função única e robusta para o som
   const handleMusic = (e) => {
-    // 1. Se o clique for em qualquer lugar do chat (texto, botão, fundo do chat), IGNORE.
+    // 1. Se o toque/clique for dentro do chat, ignora completamente
     if (e.target.closest('#chat-container')) {
       return; 
     }
 
-    // 2. Se não for no chat, troca o estado da música
+    // 2. Tenta dar o play ou pause
     if (music.paused) {
-      music.play().catch(() => {});
+      // O .play() retorna uma Promessa. Se o navegador bloquear, a gente avisa no console.
+      music.play().catch(err => {
+        console.warn("O navegador bloqueou o áudio. Tente clicar fora do chat novamente.");
+      });
     } else {
       music.pause();
     }
   };
 
-  // USAMOS APENAS 'click'. 
-  // O navegador mobile já entende o toque como clique e evita o "duplo acionamento".
-  window.addEventListener('click', handleMusic);
+  // 'pointerdown' é o segredo: funciona instantaneamente no PC e no Celular
+  document.addEventListener('pointerdown', handleMusic);
 </script>
 
 <script type="module">
