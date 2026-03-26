@@ -2,10 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
   <title>VTNC</title>
 
-  <!-- Config -->
   <script>
     const config = {
       texto: "VAI TOMAR NO CU!",
@@ -29,7 +28,6 @@
     };
   </script>
 
-  <!-- MathJax para LaTeX -->
   <script>
     window.MathJax = {
       tex: {
@@ -117,80 +115,92 @@
     #img3 { bottom: 5vh; left: 5vw; }
     #img4 { bottom: 5vh; right: 5vw; }
 
-    /* --- CSS DO CHAT --- */
+    /* --- CSS DO CHAT ATUALIZADO --- */
     #chat-container {
       position: absolute;
-      top: 1vh;
+      top: 2vh;
       left: 50%;
       transform: translateX(-50%);
-      width: 90vw; /* Ocupa 90% da largura da tela no celular */
+      width: 90vw;
       max-width: 800px;
-      background: rgba(0, 0, 0, 0.7); /* Fundo semi-transparente */
+      background: rgba(0, 0, 0, 0.7);
       border: 3px solid #FFF;
       border-radius: 10px;
       padding: 10px;
-      z-index: 100; /* Garante que fique por cima de tudo */
+      z-index: 100;
       display: flex;
       flex-direction: column;
       font-family: 'Comic Sans MS', cursive, sans-serif;
       color: white;
     }
+
     #chat-messages {
-      height: 35vh; /* Agora ocupa 60% da altura da sua tela */
+      height: 40vh; /* Altura que você pediu */
       overflow-y: auto;
       margin-bottom: 10px;
       font-size: 16px;
       text-shadow: 1px 1px 2px black;
     }
+
     #chat-inputs {
       display: flex;
       flex-direction: column;
       gap: 5px;
     }
+
+    /* Melhora para Celular: sem zoom e com Comic Sans forçada */
     #chat-inputs input, #chat-inputs button {
-      font-family: inherit;
-      padding: 5px;
+      font-family: 'Comic Sans MS', cursive, sans-serif !important;
+      font-size: 16px !important; 
+      padding: 8px;
       border-radius: 5px;
       border: none;
     }
+
     #chat-inputs button {
       background-color: #ff0000;
       color: white;
       font-weight: bold;
       cursor: pointer;
     }
-    .chat-msg { margin-bottom: 5px; word-wrap: break-word; text-align: left; }
-    .chat-user { font-weight: bold; color: #ffff00; } /* Nome em amarelo */
+
+    .chat-msg { margin-bottom: 8px; word-wrap: break-word; text-align: left; line-height: 1.4; }
+    .chat-user { font-weight: bold; color: #ffff00; }
+    
+    /* Estilo das imagens dentro do chat */
+    .chat-img {
+      max-width: 100%;
+      max-height: 250px;
+      border-radius: 5px;
+      margin-top: 5px;
+      border: 1px solid #fff;
+      display: block;
+    }
   </style>
 </head>
 <body>
 
-<!-- Imagens nos cantos -->
 <img id="img1" class="corner-image" src="" alt="Imagem 1">
 <img id="img2" class="corner-image" src="" alt="Imagem 2">
 <img id="img3" class="corner-image" src="" alt="Imagem 3">
 <img id="img4" class="corner-image" src="" alt="Imagem 4">
 
-<!-- Música de fundo -->
 <audio id="backgroundMusic" loop>
   <source src="https://raw.githubusercontent.com/arbeloya/arbeloya.github.io/main/meucarro.mp3" type="audio/mp3">
-  Seu navegador não suporta a tag de áudio.
 </audio>
 
 <canvas id="explosionCanvas"></canvas>
 
 <div class="scene">
-  <div class="text-3d" id="text3d">
-    <!-- Camadas serão geradas aqui -->
-  </div>
+  <div class="text-3d" id="text3d"></div>
 </div>
   
 <div id="chat-container">
   <div id="chat-messages"></div>
   <div id="chat-inputs">
     <input type="text" id="chat-username" placeholder="Seu nome...">
-    <input type="text" id="chat-text" placeholder="Digite sua mensagem...">
-    <button id="chat-send">Enviar</button>
+    <input type="text" id="chat-text" placeholder="Xingue ou mande LaTeX aqui...">
+    <button id="chat-send">Mandar Mensagem</button>
   </div>
 </div>
   
@@ -205,15 +215,13 @@
     width = canvas.width = window.innerWidth;
     height = canvas.height = window.innerHeight;
   }
-
   window.addEventListener('resize', resize);
   resize();
 
   function createExplosion(x, y) {
     for (let i = 0; i < 30; i++) {
       particles.push({
-        x: x,
-        y: y,
+        x: x, y: y,
         vx: (Math.random() - 0.5) * 5,
         vy: (Math.random() - 0.5) * 5,
         life: 100,
@@ -224,11 +232,7 @@
   }
 
   function updateParticles() {
-    particles.forEach(p => {
-      p.x += p.vx;
-      p.y += p.vy;
-      p.life--;
-    });
+    particles.forEach(p => { p.x += p.vx; p.y += p.vy; p.life--; });
     particles = particles.filter(p => p.life > 0);
   }
 
@@ -242,12 +246,7 @@
     });
   }
 
-  function loop() {
-    updateParticles();
-    drawParticles();
-    requestAnimationFrame(loop);
-  }
-
+  function loop() { updateParticles(); drawParticles(); requestAnimationFrame(loop); }
   loop();
 
   setInterval(() => {
@@ -256,7 +255,6 @@
     createExplosion(centerX, centerY);
   }, 600);
 
-  // Texto 3D
   const textElement = document.getElementById("text3d");
   document.documentElement.style.setProperty('--font-size', config.tamanhoFonte);
   document.documentElement.style.setProperty('--rotate-speed', config.velocidade);
@@ -270,113 +268,70 @@
     textElement.appendChild(span);
   }
 
-  // Cores RGB animadas
   if (config.usarCoresRGB) {
     let hue = 0;
     function updateColors() {
       const fg = `hsl(${hue}, 100%, 50%)`;
       const bg = `hsl(${(hue + 180) % 360}, 100%, 50%)`;
-
       document.body.style.backgroundColor = bg;
       textElement.style.color = fg;
-      textElement.querySelectorAll('.layer').forEach(layer => {
-        layer.style.color = fg;
-      });
-
+      textElement.querySelectorAll('.layer').forEach(layer => layer.style.color = fg);
       hue = (hue + 0.5) % 360;
       requestAnimationFrame(updateColors);
     }
     updateColors();
-  } else {
-    textElement.style.color = config.corTexto;
-    document.body.style.backgroundColor = config.corFundo;
-    textElement.querySelectorAll('.layer').forEach(layer => {
-      layer.style.color = config.corTexto;
-    });
   }
 
-  // Carrega imagens com tamanhos responsivos do config
   const setImage = (id, src, size) => {
     const img = document.getElementById(id);
     img.src = src;
     img.style.width = size;
-    img.style.height = "auto";
     img.style.animationDuration = config.velocidadeRotacaoImagem;
   };
-
   setImage('img1', config.imagem1, config.imagem1Tamanho);
   setImage('img2', config.imagem2, config.imagem2Tamanho);
   setImage('img3', config.imagem3, config.imagem3Tamanho);
   setImage('img4', config.imagem4, config.imagem4Tamanho);
 
-  // Toca/pausa música com toque/click
   const music = document.getElementById('backgroundMusic');
-  function toggleMusic() {
-    if (music.paused) {
-      music.play().catch(e => console.log("Erro ao tentar tocar música:", e));
-    } else {
-      music.pause();
-    }
-  }
-  window.addEventListener('click', toggleMusic);
-  window.addEventListener('touchstart', toggleMusic);
-
-  const chatContainer = document.getElementById('chat-container');
-  chatContainer.addEventListener('click', function(e) {
-    e.stopPropagation();
-  });
-  chatContainer.addEventListener('touchstart', function(e) {
-    e.stopPropagation();
-  });
+  window.addEventListener('click', () => { if(music.paused) music.play().catch(() => {}); });
 </script>
 
 <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getDatabase, ref, push, onChildAdded, query, limitToLast } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-  // Suas chaves (com a databaseURL adicionada para evitar erros)
   const firebaseConfig = {
-  apiKey: "AIzaSyBvVY5dBSKL_GVjooT_cXr9OYh8XbH64Mw",
-  authDomain: "chat-rgb.firebaseapp.com",
-  projectId: "chat-rgb",
-  storageBucket: "chat-rgb.firebasestorage.app",
-  messagingSenderId: "100890193145",
-  appId: "1:100890193145:web:bd9cf3fd1093bc041c8628"
-};
+    apiKey: "AIzaSyBvVY5dBSKL_GVjooT_cXr9OYh8XbH64Mw",
+    authDomain: "chat-rgb.firebaseapp.com",
+    databaseURL: "https://chat-rgb-default-rtdb.firebaseio.com",
+    projectId: "chat-rgb",
+    storageBucket: "chat-rgb.firebasestorage.app",
+    messagingSenderId: "100890193145",
+    appId: "1:100890193145:web:bd9cf3fd1093bc041c8628"
+  };
 
-  // Inicializa o Firebase
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
   const chatRef = ref(db, 'mensagens');
-  // Essa linha diz ao Firebase: "Só me mande as últimas 100"
   const chatQuery = query(chatRef, limitToLast(100));
-  // Pega os elementos do HTML
+
   const chatMessages = document.getElementById('chat-messages');
   const btnSend = document.getElementById('chat-send');
   const inputUser = document.getElementById('chat-username');
   const inputText = document.getElementById('chat-text');
 
-  // Função para enviar mensagem ao clicar no botão
   btnSend.onclick = () => {
       const nome = inputUser.value.trim() || 'Anônimo';
       const msg = inputText.value.trim();
-      
       if(msg !== "") {
-          push(chatRef, { nome: nome, texto: msg }); // Envia pro banco
-          inputText.value = ''; // Limpa o campo para a próxima mensagem
+          push(chatRef, { nome: nome, texto: msg });
+          inputText.value = '';
       }
   };
 
-  // Enviar mensagem apertando a tecla "Enter"
-  inputText.addEventListener("keypress", function(event) {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      btnSend.click();
-    }
-  });
+  inputText.addEventListener("keypress", (e) => { if (e.key === "Enter") btnSend.click(); });
 
-  // Função que fica escutando o banco de dados em tempo real
-// Receber mensagens em tempo real e compilar o LaTeX
-// Receber mensagens em tempo real, renderizar imagens e compilar o LaTeX
   onChildAdded(chatQuery, (snapshot) => {
       const data = snapshot.val();
       const div = document.createElement('div');
@@ -384,27 +339,19 @@
       
       let textoFinal = data.texto;
 
-      // Detector de links de imagem (terminados em jpg, png, gif, webp, etc)
-      const regexImagem = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))/ig;
-      
-      // Se a mensagem tiver um link de imagem, transforma na tag <img>
-      if (regexImagem.test(textoFinal)) {
-          textoFinal = textoFinal.replace(regexImagem, '<br><img src="$1" style="max-width: 100%; max-height: 200px; border-radius: 5px; margin-top: 5px; border: 1px solid #fff;" alt="Imagem do chat">');
-      }
+      // Detector de links turbinado (Twitter, etc)
+      const regexImagem = /(https?:\/\/[^\s]+(?:\.png|\.jpg|\.jpeg|\.gif|\.webp|format=png|format=jpg|format=jpeg|format=gif|format=webp)[^\s]*)/ig;
+      textoFinal = textoFinal.replace(regexImagem, '<br><img src="$1" class="chat-img">');
 
-      // Monta a mensagem final na tela
       div.innerHTML = `<span class="chat-user">${data.nome}:</span> ${textoFinal}`;
       chatMessages.appendChild(div);
-      
-      // Rola a barrinha do chat para a última mensagem automaticamente
       chatMessages.scrollTop = chatMessages.scrollHeight;
 
-      // Pede para o MathJax compilar a matemática, se houver
       if (typeof MathJax !== 'undefined') {
-          MathJax.typesetPromise([div]).catch((err) => console.log('Erro no MathJax: ', err));
+          MathJax.typesetPromise([div]).catch((err) => console.log(err));
       }
   });
 </script>
-  
+
 </body>
 </html>
