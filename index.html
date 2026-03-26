@@ -385,6 +385,11 @@
 
   inputText.addEventListener("keypress", (e) => { if (e.key === "Enter") btnSend.click(); });
 
+  // Função dedicada para rolar sempre para o final
+  const scrollToBottom = () => {
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+  };
+
   onChildAdded(chatQuery, (snapshot) => {
       const data = snapshot.val();
       const div = document.createElement('div');
@@ -392,16 +397,29 @@
       
       let textoFinal = data.texto;
 
-      // Detector de links turbinado (Twitter, etc)
+      // Detector de links de imagem
       const regexImagem = /(https?:\/\/[^\s]+(?:\.png|\.jpg|\.jpeg|\.gif|\.webp|format=png|format=jpg|format=jpeg|format=gif|format=webp)[^\s]*)/ig;
       textoFinal = textoFinal.replace(regexImagem, '<br><img src="$1" class="chat-img">');
 
       div.innerHTML = `<span class="chat-user">${data.nome}:</span> ${textoFinal}`;
       chatMessages.appendChild(div);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
+      
+      // 1. Rolagem imediata (para texto puro)
+      scrollToBottom();
 
+      // 2. CORREÇÃO PARA IMAGENS: Rola de novo quando a imagem terminar de baixar
+      const imagensNaMensagem = div.getElementsByTagName('img');
+      for (let img of imagensNaMensagem) {
+          img.onload = scrollToBottom;
+      }
+
+      // 3. CORREÇÃO PARA LATEX: Rola de novo depois que o MathJax terminar de renderizar
       if (typeof MathJax !== 'undefined') {
-          MathJax.typesetPromise([div]).catch((err) => console.log(err));
+          MathJax.typesetPromise([div])
+              .then(() => {
+                  scrollToBottom(); // <--- O segredo está aqui!
+              })
+              .catch((err) => console.log(err));
       }
   });
 </script>
