@@ -48,10 +48,34 @@
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 
   <style>
+    /* 1. Usando uma versão mais estável da Comic Sans hospedada externamente */
     @font-face {
-      font-family: 'Comic Sans MS';
-      src: url('https://arbeloya.github.io/comic-sans-ms/comici.ttf') format('truetype');
+      font-family: 'Comic Sans MS Custom';
+      src: url('https://cdn.jsdelivr.net/gh/saatvikbhardwaj/comic-sans-ms@master/Comic%20Sans%20MS.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
     }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      /* Aplicando a fonte no corpo todo */
+      font-family: 'Comic Sans MS Custom', 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+    }
+
+    /* 2. Forçando a fonte nos inputs e botões (Mobile é chato com isso) */
+    #chat-container input, 
+    #chat-container button, 
+    #chat-messages,
+    .chat-msg {
+      font-family: 'Comic Sans MS Custom', 'Comic Sans MS', 'Comic Sans', cursive, sans-serif !important;
+      font-style: normal !important; /* Tira o itálico se você não quiser */
+    }
+
 
     body {
       margin: 0;
