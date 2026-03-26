@@ -177,23 +177,26 @@
       display: block;
     }
 
-    /* --- AJUSTE EXCLUSIVO PARA CELULAR (Telas com menos de 768px de largura) --- */
+    /* --- DENTRO DA MEDIA QUERY QUE JÁ EXISTE --- */
     @media screen and (max-width: 768px) {
       .scene {
-        /* Desativa a centralização automática do Flexbox */
         position: absolute; 
-        
-        /* Empurra o texto para baixo. 
-           O chat ocupa o topo, o texto ocupa o fundo. */
-        top: 70vh; /* Ajuste este valor (ex: 65vh, 75vh) se achar necessário subir ou descer mais */
-        
+        top: 75vh; /* Desci um tiquinho mais o texto para dar espaço aos dedos */
         left: 50%;
         transform: translateX(-50%);
       }
+
+      /* MOVE OS DEDOS DO TOPO PARA BAIXO DO CHAT */
+      #img1, #img2 {
+        top: 48vh !important; /* 48% da altura da tela coloca eles logo abaixo do botão de enviar */
+      }
       
-      /* Opcional: Diminuir um pouco a fonte no mobile para não cortar nas bordas */
+      /* Ajuste opcional: deixar eles um pouco mais "abertos" nas pontas */
+      #img1 { left: 2vw; }
+      #img2 { right: 2vw; }
+
       .text-3d {
-        --font-size: 4rem; /* Diminuindo de 6.5rem para 4rem no celular */
+        --font-size: 3.5rem; /* Ajuste para o texto não bater nos dedos novos */
       }
     }
     
