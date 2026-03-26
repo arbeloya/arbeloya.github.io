@@ -116,6 +116,50 @@
     #img2 { top: 5vh; right: 5vw; }
     #img3 { bottom: 5vh; left: 5vw; }
     #img4 { bottom: 5vh; right: 5vw; }
+
+    /* --- CSS DO CHAT --- */
+    #chat-container {
+      position: absolute;
+      bottom: 15vh;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 300px;
+      background: rgba(0, 0, 0, 0.7); /* Fundo semi-transparente */
+      border: 3px solid #FFF;
+      border-radius: 10px;
+      padding: 10px;
+      z-index: 100; /* Garante que fique por cima de tudo */
+      display: flex;
+      flex-direction: column;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      color: white;
+    }
+    #chat-messages {
+      height: 150px;
+      overflow-y: auto;
+      margin-bottom: 10px;
+      font-size: 16px;
+      text-shadow: 1px 1px 2px black;
+    }
+    #chat-inputs {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    #chat-inputs input, #chat-inputs button {
+      font-family: inherit;
+      padding: 5px;
+      border-radius: 5px;
+      border: none;
+    }
+    #chat-inputs button {
+      background-color: #ff0000;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .chat-msg { margin-bottom: 5px; word-wrap: break-word; text-align: left; }
+    .chat-user { font-weight: bold; color: #ffff00; } /* Nome em amarelo */
   </style>
 </head>
 <body>
