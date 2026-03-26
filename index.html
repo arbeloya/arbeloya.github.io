@@ -320,6 +320,14 @@
   }
   window.addEventListener('click', toggleMusic);
   window.addEventListener('touchstart', toggleMusic);
+
+  const chatContainer = document.getElementById('chat-container');
+  chatContainer.addEventListener('click', function(e) {
+    e.stopPropagation();
+  });
+  chatContainer.addEventListener('touchstart', function(e) {
+    e.stopPropagation();
+  });
 </script>
 
 </body>
