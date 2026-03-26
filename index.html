@@ -317,8 +317,22 @@
       music.pause();
     }
   }
+
+// Toca/pausa música com toque/click (Ignorando o clique dentro do chat)
+  const music = document.getElementById('backgroundMusic');
+  function toggleMusic(e) {
+    // Se o clique foi dentro do chat, não faz nada com a música
+    if (e.target.closest('#chat-container')) return; 
+
+    if (music.paused) {
+      music.play().catch(e => console.log("Erro ao tentar tocar música:", e));
+    } else {
+      music.pause();
+    }
+  }
   window.addEventListener('click', toggleMusic);
   window.addEventListener('touchstart', toggleMusic);
+  
 </script>
 
 </body>
