@@ -330,7 +330,7 @@
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
   const chatRef = ref(db, 'mensagens');
-  const chatQuery = query(chatRef, limitToLast(100));
+  const chatQuery = query(chatRef, limitToLast(50));
 
   const chatMessages = document.getElementById('chat-messages');
   const btnSend = document.getElementById('chat-send');
