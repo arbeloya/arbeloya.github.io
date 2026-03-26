@@ -375,22 +375,30 @@
 
   // Função que fica escutando o banco de dados em tempo real
 // Receber mensagens em tempo real e compilar o LaTeX
+// Receber mensagens em tempo real, renderizar imagens e compilar o LaTeX
   onChildAdded(chatRef, (snapshot) => {
       const data = snapshot.val();
-      
-      // Cria a div da mensagem
       const div = document.createElement('div');
       div.className = 'chat-msg';
-      div.innerHTML = `<span class="chat-user">${data.nome}:</span> ${data.texto}`;
       
-      // Joga a mensagem na tela
+      let textoFinal = data.texto;
+
+      // Detector de links de imagem (terminados em jpg, png, gif, webp, etc)
+      const regexImagem = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))/ig;
+      
+      // Se a mensagem tiver um link de imagem, transforma na tag <img>
+      if (regexImagem.test(textoFinal)) {
+          textoFinal = textoFinal.replace(regexImagem, '<br><img src="$1" style="max-width: 100%; max-height: 200px; border-radius: 5px; margin-top: 5px; border: 1px solid #fff;" alt="Imagem do chat">');
+      }
+
+      // Monta a mensagem final na tela
+      div.innerHTML = `<span class="chat-user">${data.nome}:</span> ${textoFinal}`;
       chatMessages.appendChild(div);
       
-      // Rola a barrinha do chat para baixo
+      // Rola a barrinha do chat para a última mensagem automaticamente
       chatMessages.scrollTop = chatMessages.scrollHeight;
 
-      // --- A MÁGICA DO LATEX AQUI ---
-      // Pede para o MathJax compilar a matemática apenas dentro dessa nova div
+      // Pede para o MathJax compilar a matemática, se houver
       if (typeof MathJax !== 'undefined') {
           MathJax.typesetPromise([div]).catch((err) => console.log('Erro no MathJax: ', err));
       }
