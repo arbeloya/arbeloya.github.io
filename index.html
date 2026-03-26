@@ -176,6 +176,27 @@
       border: 1px solid #fff;
       display: block;
     }
+
+    /* --- AJUSTE EXCLUSIVO PARA CELULAR (Telas com menos de 768px de largura) --- */
+    @media screen and (max-width: 768px) {
+      .scene {
+        /* Desativa a centralização automática do Flexbox */
+        position: absolute; 
+        
+        /* Empurra o texto para baixo. 
+           O chat ocupa o topo, o texto ocupa o fundo. */
+        top: 70vh; /* Ajuste este valor (ex: 65vh, 75vh) se achar necessário subir ou descer mais */
+        
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      
+      /* Opcional: Diminuir um pouco a fonte no mobile para não cortar nas bordas */
+      .text-3d {
+        --font-size: 4rem; /* Diminuindo de 6.5rem para 4rem no celular */
+      }
+    }
+    
   </style>
 </head>
 <body>
